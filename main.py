@@ -1,13 +1,30 @@
-from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QColor
 from random import randint
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Window(QWidget):
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1164, 905)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(584, 430, 31, 23))
+        self.pushButton.setText("")
+        self.pushButton.setObjectName("pushButton")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+
+
+class Window(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)
+        self.setupUi(self)
         self.crugi = []
         self.pushButton.clicked.connect(self.update)
 
@@ -19,9 +36,10 @@ class Window(QWidget):
 
     def drawCrug(self, qp):
         width = randint(50, 200)
-        qp.setBrush(QColor(255, 255, 0))
-        self.crugi.append((randint(width, self.width() - width), randint(width, self.height() - width), width, width))
-        for crug in self.crugi:
+        a = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
+        self.crugi.append(((randint(width, self.width() - width), randint(width, self.height() - width), width, width), a))
+        for crug, a in self.crugi:
+            qp.setBrush(a)
             qp.drawEllipse(*crug)
 
 
